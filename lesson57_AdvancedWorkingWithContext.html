@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      p {
+        font-weight: bold;
+      }
+      .topic {
+        text-decoration: underline;
+        margin: 10px;
+      }
+      .task {
+        margin: 20px 10px;
+      }
+      .container {
+        padding-bottom: 15px;
+        border-bottom: 1px black solid;
+      }
+    </style>
+
+    <p>Задание 1</p>
+
+    <div class="topic">Работа с call</div>
+    <div class="task">
+      Добавьте в последнюю строчку метод call() так, чтобы на экран вывелось
+      value инпута, лежащего в переменной elem.
+    </div>
+
+    <input class="elem" value="привет" />
+    <div class="container divT1"></div>
+
+    <p>Задание 2</p>
+
+    <div class="task">
+      Добавьте в последнюю строчку метод call() так, чтобы на экран вывелось
+      'привет, Иванов Иван'. Слово 'привет' должно взяться из value инпута, а
+      'Иванов' и 'Иван' должны быть параметрами функции.
+    </div>
+
+    <input class="elem2" value="привет" />
+    <div class="container divT2"></div>
+
+    <p>Задание 3</p>
+    <div class="topic">Работа с apply</div>
+
+    <div class="task">
+      Переделайте решение предыдущей задачи так, чтобы место метода call() был
+      метод apply().
+    </div>
+
+    <input class="elem3" value="привет" />
+    <div class="container divT3"></div>
+
+    <p>Задание 4</p>
+    <div class="topic">Работа с bind</div>
+
+    <div class="task">
+      Напишите в указанном месте конструкцию с методом bind() так, чтобы this
+      внутри функции func всегда указывал на инпут из переменной elem.
+    </div>
+
+    <input class="elem4" value="привет" />
+    <div class="container divT4"></div>
+
+    <script>
+      // http://old.code.mu/tasks/javascript/context/prodvinutaya-rabota-s-kontekstom-v-javascript.html
+
+      // задание 1
+
+      const d = document
+      const elem = d.querySelector('.elem')
+      const divT1 = d.querySelector('.divT1')
+
+      function outputOfResult(parent, receivedValue, initialValue = 'none') {
+        if (initialValue !== 'none') {
+          const sourceString = `Исходная строка: ${initialValue}`
+          const newDiv = d.createElement('div')
+          parent.appendChild(newDiv)
+          newDiv.innerHTML = sourceString
+        }
+
+        const modifiedString = `Результат: ${receivedValue}`
+        const newDiv2 = d.createElement('div')
+        parent.appendChild(newDiv2)
+        newDiv2.innerHTML = modifiedString
+      }
+
+      function func() {
+        outputOfResult(divT1, this.value)
+      }
+      func.call(elem)
+
+      // задание 2
+
+      const elem2 = d.querySelector('.elem2')
+      const divT2 = d.querySelector('.divT2')
+
+      function func2(surname, name) {
+        let appeal = this.value + ', ' + surname + ' ' + name
+
+        divT2.innerHTML = ''
+        outputOfResult(divT2, appeal)
+      }
+      let ft2 = func2.bind(elem2, 'Иванов', 'Иван')
+
+      ft2()
+
+      elem2.addEventListener('input', ft2)
+
+      // задание 3
+
+      const elem3 = d.querySelector('.elem3')
+      const divT3 = d.querySelector('.divT3')
+
+      function func3(surname, name) {
+        let appeal = this.value + ', ' + surname + ' ' + name
+
+        divT3.innerHTML = ''
+        outputOfResult(divT3, appeal)
+      }
+
+      let data = ['Иванов', 'Иван']
+      func3.apply(elem3, data)
+
+      // задание 4
+
+      const elem4 = d.querySelector('.elem4')
+      const divT4 = d.querySelector('.divT4')
+
+      function func4(surname, name) {
+        let appeal = this.value + ', ' + surname + ' ' + name
+
+        outputOfResult(divT4, appeal)
+      }
+      let ft4_1 = func4.bind(elem4, 'Иванов', 'Иван')
+      let ft4_2 = func4.bind(elem4, 'Петров', 'Петр')
+
+      ft4_1()
+      ft4_2()
+
+      elem4.addEventListener('input', ft4_1)
+    </script>
+  </body>
+</html>
